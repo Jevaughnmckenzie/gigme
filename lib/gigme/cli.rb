@@ -71,7 +71,7 @@ class Gigme::CLI
       show_gigs(self.category_input.to_i)
     else
       puts "Not sure what you meant. Please choose a number associated with a gig, 'locations' to change location, or 'exit' to quit the program."
-      show_gig_categories(self.locations_input)
+      show_gig_categories(self.category_input)
       ask_for_gig_category
     end
   end
@@ -112,5 +112,25 @@ class Gigme::CLI
     puts "..........."
     puts "gig details"
     puts "..........."
+    puts
+    puts "What would you like to do next?"
+    puts(<<-DOC.sub(/\n$/, ''))
+      1. Back to results
+      2. Back to categories
+      3. Back to locations
+      4. exit
+    DOC
+    input = gets.strip
+
+    if input.to_i == 1
+      show_gigs(self.category_input.to_i)
+    elsif input.to_i == 2
+      show_gig_categories(self.locations_input.to_i)
+    elsif input.to_i == 3
+      show_locations
+    else
+      puts "Goodbye!"
+      exit
+    end
   end
 end
