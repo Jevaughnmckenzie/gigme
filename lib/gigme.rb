@@ -1,5 +1,5 @@
-require "gigme/version"
-require "gigme/cli.rb"
+require_relative "gigme/version"
+require_relative "gigme/cli"
 
 module Gigme
   # Your code goes here...

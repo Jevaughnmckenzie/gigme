@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
+require_relative "../lib/gigme.rb"
 
 Gigme::CLI.new.call
