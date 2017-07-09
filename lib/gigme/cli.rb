@@ -24,8 +24,21 @@ class Gigme::CLI
   def ask_for_location
     puts
     puts "Where would you like to search for gigs?"
-    self.locations_input = gets.strip.to_i
-    show_gig_catagories(self.locations_input)
+    puts "Type 'exit' to exit the program"
+    puts
+    self.locations_input = gets.strip.downcase
+
+    if self.locations_input == 'exit'
+      puts 'Goodbye!'
+      exit
+    elsif self.locations_input.to_i > 0
+      show_gig_catagories(self.locations_input.to_i)
+    else
+      puts "Not sure what you meant. Please choose a number associated with a location or 'exit' to quit the program."
+      show_locations
+      ask_for_location
+    end
+
   end
 
   def show_gig_catagories(input)
