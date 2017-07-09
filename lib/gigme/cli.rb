@@ -9,15 +9,7 @@ class Gigme::CLI
 
   def show_locations
     puts "Please choose from our list of locations:"
-    puts(<<-DOC.sub(/\n$/, ''))
-      1. Mahattan
-      2. Brooklyn
-      3. Queens
-      4. The Bronx
-      5. Staten Island
-      6. Long Island
-      7. Westchester
-    DOC
+    Gigme::Scraper.locations.each.with_index(1) { |location, index| puts "#{index}. #{location}" }
     ask_for_location
   end
 
@@ -44,16 +36,18 @@ class Gigme::CLI
   def show_gig_categories(input)
     puts
     puts "Here's list of gig categories:"
-    puts(<<-DOC.sub(/\n$/, ''))
-      1. Computer
-      2. Creative
-      3. Crew
-      4. Domestic
-      5. Event
-      6. Labor
-      7. Talent
-      8. Writing
-    DOC
+    categories = Gigme::Scraper.gig_categories_for_location(input)
+    categories.each.with_index(1) { |category, index| puts "#{index}. #{category}" }
+    # puts(<<-DOC.sub(/\n$/, ''))
+    #   1. Computer
+    #   2. Creative
+    #   3. Crew
+    #   4. Domestic
+    #   5. Event
+    #   6. Labor
+    #   7. Talent
+    #   8. Writing
+    # DOC
     ask_for_gig_category
   end
 
@@ -80,16 +74,17 @@ class Gigme::CLI
     puts
     puts "Here's the most recent gigs according to your preferences"
     puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig categories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
-    puts(<<-DOC.sub(/\n$/, ''))
-      1. gig
-      2. gig
-      3. gig
-      4. gig
-      5. gig
-      6. gig
-      7. gig
-      8. gig
-    DOC
+    Gigme::Scraper.gigs.each.with_index(1) { |gig, index| puts "#{index}. #{gig}" }
+    # puts(<<-DOC.sub(/\n$/, ''))
+    #   1. gig
+    #   2. gig
+    #   3. gig
+    #   4. gig
+    #   5. gig
+    #   6. gig
+    #   7. gig
+    #   8. gig
+    # DOC
 
     gig_input = gets.strip.downcase
 
@@ -109,9 +104,10 @@ class Gigme::CLI
   end
 
   def show_detail
-    puts "..........."
-    puts "gig details"
-    puts "..........."
+    Gigme::Scraper.show_gig_details
+    # puts "..........."
+    # puts "gig details"
+    # puts "..........."
     puts
     puts "What would you like to do next?"
     puts(<<-DOC.sub(/\n$/, ''))
