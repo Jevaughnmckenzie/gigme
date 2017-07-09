@@ -52,6 +52,7 @@ class Gigme::CLI
   end
 
   def show_gigs(input)
+    puts
     puts "Here's the most recent gigs according to your preferences"
     puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig catagories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
     puts(<<-DOC.sub(/\n$/, ''))
@@ -67,14 +68,15 @@ class Gigme::CLI
 
     gig_input = gets.strip.downcase
 
-    if gig_input = 'categories'
+    if gig_input == 'categories'
       show_gig_catagories(self.category_input)
-    elsif gig_input = 'locations'
-      show_locations(self.locations_input)
-    elsif gig_input = 'exit'
+    elsif gig_input == 'locations'
+      show_locations
+    elsif gig_input == 'exit'
+      puts "Goodbye!"
       exit
     elsif gig_input.to_i > 0
-      show_detail(input.to_i - 1)
+      show_detail
     else
       puts "Not sure what you meant. Please choose from our list of gigs or enter 'locations', 'catagories', or 'exit'."
       show_gigs(input)
