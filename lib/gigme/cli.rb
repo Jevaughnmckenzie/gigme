@@ -1,4 +1,7 @@
 class Gigme::CLI
+
+  attr_accessor :locations_input, :category_input
+
   def call
     puts "Welcome to Gigme - New York!"
     show_locations
@@ -21,8 +24,8 @@ class Gigme::CLI
   def ask_for_location
     puts
     puts "Where would you like to search for gigs?"
-    input = gets.strip.to_i
-    show_gig_catagories(input)
+    self.locations_input = gets.strip.to_i
+    show_gig_catagories(self.locations_input)
   end
 
   def show_gig_catagories(input)
@@ -44,8 +47,8 @@ class Gigme::CLI
   def ask_for_gig_catagory
     puts
     puts "What kind of gig are you looking for?"
-    input = gets.strip.to_i
-    show_gigs(input)
+    self.category_input = gets.strip.to_i
+    show_gigs(self.category_input)
   end
 
   def show_gigs(input)
@@ -65,9 +68,9 @@ class Gigme::CLI
     gig_input = gets.strip.downcase
 
     if gig_input = 'categories'
-      show_gig_catagories
+      show_gig_catagories(self.category_input)
     elsif gig_input = 'locations'
-      show_locations
+      show_locations(self.locations_input)
     elsif gig_input = 'exit'
       exit
     elsif gig_input.to_i > 0
