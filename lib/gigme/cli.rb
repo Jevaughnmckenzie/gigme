@@ -1,0 +1,3 @@
+class Gigme::CLI
+  
+end
