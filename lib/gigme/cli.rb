@@ -60,8 +60,20 @@ class Gigme::CLI
   def ask_for_gig_catagory
     puts
     puts "What kind of gig are you looking for?"
-    self.category_input = gets.strip.to_i
-    show_gigs(self.category_input)
+    self.category_input = gets.strip.downcase
+
+    if self.category_input == 'exit'
+      puts 'Goodbye!'
+      exit
+    elsif self.category_input == 'locations'
+      show_locations
+    elsif self.category_input.to_i > 0
+      show_gigs(self.category_input.to_i)
+    else
+      puts "Not sure what you meant. Please choose a number associated with a gig, 'locations' to change location, or 'exit' to quit the program."
+      show_gig_catagories(self.locations_input)
+      ask_for_gig_catagory
+    end
   end
 
   def show_gigs(input)
