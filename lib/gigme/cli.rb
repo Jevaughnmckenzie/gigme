@@ -9,7 +9,7 @@ class Gigme::CLI
 
   def show_locations
     puts "Please choose from our list of locations:"
-    Gigme::Scraper.locations.each.with_index(1) { |location, index| puts "#{index}. #{location}" }
+    Gigme::Scraper.locations
     ask_for_location
   end
 
@@ -28,7 +28,6 @@ class Gigme::CLI
     else
       puts "Not sure what you meant. Please choose a number associated with a location or 'exit' to quit the program."
       show_locations
-      ask_for_location
     end
 
   end
