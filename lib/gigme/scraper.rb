@@ -58,7 +58,7 @@ class Gigme::Scraper
       gig_text_char_array = gig_text.split(//)
       gig_text_end = gig_text_char_array.index("\n")
       relevant_gig_text = gig_text_char_array[0..gig_text_end].join
-      puts "#{gig.children.css("time").attr("datetime").value} #{relevant_gig_text}"
+      puts "#{index + 1}. #{relevant_gig_text} - Posted:  #{gig.children.css("time").attr("datetime").value}"
 
     end
   end

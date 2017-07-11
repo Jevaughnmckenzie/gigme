@@ -95,15 +95,15 @@ class Gigme::CLI
       puts "Goodbye!"
       exit
     elsif gig_input.to_i > 0
-      show_detail
+      show_detail(gig_input.to_i)
     else
       puts "Not sure what you meant. Please choose from our list of gigs or enter 'locations', 'categories', or 'exit'."
       show_gigs(input)
     end
   end
 
-  def show_detail
-    Gigme::Scraper.show_gig_details
+  def show_detail(gig_result_index)
+    Gigme::Scraper.show_gig_details(gig_result_index)
     # puts "..........."
     # puts "gig details"
     # puts "..........."
