@@ -36,17 +36,6 @@ class Gigme::CLI
     puts
     puts "Here's list of gig categories:"
     Gigme::Scraper.gig_categories_for_location(input)
-    # categories.each_with_index { |category, index| puts "#{index + 1}. #{category}" }
-    # puts(<<-DOC.sub(/\n$/, ''))
-    #   1. Computer
-    #   2. Creative
-    #   3. Crew
-    #   4. Domestic
-    #   5. Event
-    #   6. Labor
-    #   7. Talent
-    #   8. Writing
-    # DOC
     ask_for_gig_category
   end
 
@@ -73,7 +62,7 @@ class Gigme::CLI
     puts
     puts "Here's the most recent gigs according to your preferences"
     puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig categories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
-    Gigme::Scraper.gigs.each_with_index { |gig, index| puts "#{index + 1}. #{gig}" }
+    Gigme::Scraper.gigs_for_category(input).each_with_index { |gig, index| puts "#{index + 1}. #{gig}" }
     # puts(<<-DOC.sub(/\n$/, ''))
     #   1. gig
     #   2. gig
