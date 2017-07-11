@@ -1,6 +1,7 @@
 class Gigme::CLI
+  attr_accessor :locations_input, :category_input, :locations
 
-  attr_accessor :locations_input, :category_input
+
 
   def call
     puts "Welcome to Gigme - New York!"
@@ -9,15 +10,7 @@ class Gigme::CLI
 
   def show_locations
     puts "Please choose from our list of locations:"
-    puts(<<-DOC.sub(/\n$/, ''))
-      1. Mahattan
-      2. Brooklyn
-      3. Queens
-      4. The Bronx
-      5. Staten Island
-      6. Long Island
-      7. Westchester
-    DOC
+    self.locations = Gigme::Scraper.locations
     ask_for_location
   end
 
@@ -31,12 +24,11 @@ class Gigme::CLI
     if self.locations_input == 'exit'
       puts 'Goodbye!'
       exit
-    elsif self.locations_input.to_i > 0
+    elsif self.locations_input.to_i > 0 && self.locations_input.to_i <= self.locations.count
       show_gig_categories(self.locations_input.to_i)
     else
       puts "Not sure what you meant. Please choose a number associated with a location or 'exit' to quit the program."
       show_locations
-      ask_for_location
     end
 
   end
@@ -44,16 +36,18 @@ class Gigme::CLI
   def show_gig_categories(input)
     puts
     puts "Here's list of gig categories:"
-    puts(<<-DOC.sub(/\n$/, ''))
-      1. Computer
-      2. Creative
-      3. Crew
-      4. Domestic
-      5. Event
-      6. Labor
-      7. Talent
-      8. Writing
-    DOC
+    Gigme::Scraper.gig_categories_for_location(input)
+    # categories.each_with_index { |category, index| puts "#{index + 1}. #{category}" }
+    # puts(<<-DOC.sub(/\n$/, ''))
+    #   1. Computer
+    #   2. Creative
+    #   3. Crew
+    #   4. Domestic
+    #   5. Event
+    #   6. Labor
+    #   7. Talent
+    #   8. Writing
+    # DOC
     ask_for_gig_category
   end
 
@@ -79,17 +73,19 @@ class Gigme::CLI
   def show_gigs(input)
     puts
     puts "Here's the most recent gigs according to your preferences"
-    puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig categories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
-    puts(<<-DOC.sub(/\n$/, ''))
-      1. gig
-      2. gig
-      3. gig
-      4. gig
-      5. gig
-      6. gig
-      7. gig
-      8. gig
-    DOC
+    puts
+    puts "Select the gig's number to get more details.\nType 'categories' to choose from other gig categories,'locations' to select a new location, or type 'exit' to quit."
+    Gigme::Scraper.gigs_for_category(input)
+    # puts(<<-DOC.sub(/\n$/, ''))
+    #   1. gig
+    #   2. gig
+    #   3. gig
+    #   4. gig
+    #   5. gig
+    #   6. gig
+    #   7. gig
+    #   8. gig
+    # DOC
 
     gig_input = gets.strip.downcase
 
@@ -101,17 +97,18 @@ class Gigme::CLI
       puts "Goodbye!"
       exit
     elsif gig_input.to_i > 0
-      show_detail
+      show_detail(gig_input.to_i)
     else
       puts "Not sure what you meant. Please choose from our list of gigs or enter 'locations', 'categories', or 'exit'."
       show_gigs(input)
     end
   end
 
-  def show_detail
-    puts "..........."
-    puts "gig details"
-    puts "..........."
+  def show_detail(gig_result_index)
+    Gigme::Scraper.show_gig_details(gig_result_index)
+    # puts "..........."
+    # puts "gig details"
+    # puts "..........."
     puts
     puts "What would you like to do next?"
     puts(<<-DOC.sub(/\n$/, ''))
