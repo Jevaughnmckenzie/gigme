@@ -1,6 +1,6 @@
 class Gigme::Scraper
 
-  BASE_PATH = "https://newyork.craigslist.org/brk/"
+  BASE_PATH = "https://newyork.craigslist.org"
   @@homepage = Nokogiri::HTML(open(BASE_PATH))
 
   def self.homepage
@@ -38,8 +38,8 @@ class Gigme::Scraper
 
 
   def self.gig_categories_for_location
-    location_path = self.locations_html[location_index - 1].attr("href")
-    location_page = Nokogiri::HTML(open(BASE_PATH))
+    # location_path = self.locations_html[location_index - 1].attr("href")
+    location_page = Nokogiri::HTML(open(BASE_PATH + "/brk/"))
     self.gigs_results_html = location_page.css(".jobs div#ggg ul a")
     self.gigs_results_html.each_with_index { |gig_category, index| puts "#{index + 1}. #{gig_category.children.text}"}
   end
@@ -47,13 +47,18 @@ class Gigme::Scraper
   def self.gigs_for_category(category_index)
     gigs_path = self.gigs_results_html[category_index - 1].attr("href")
     gigs_page = Nokogiri::HTML(open(BASE_PATH + gigs_path))
-    binding.pry
+    # binding.pry
     self.gig_html = gigs_page.css(".rows p.result-info")
 
     first_ten_gigs = self.gig_html[0..9]
 
     first_ten_gigs.each_with_index do |gig, index|
-      puts "#{gig.children.css("time").attr("datetime").value} #{gig.children.css("a").text}"
+      gig_text = gig.children.css("a").text
+      #was having difficulty getting rid of newline characters and extra whitespace through gsub and similar means, so the following was my solution
+      gig_text_char_array = gig_text.split(//)
+      gig_text_end = gig_text_char_array.index("\n")
+      relevant_gig_text = gig_text_char_array[0..gig_text_end].join
+      puts "#{gig.children.css("time").attr("datetime").value} #{relevant_gig_text}"
 
     end
   end
