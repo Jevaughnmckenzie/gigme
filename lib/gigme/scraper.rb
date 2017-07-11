@@ -37,9 +37,9 @@ class Gigme::Scraper
   end
 
 
-  def self.gig_categories_for_location
-    # location_path = self.locations_html[location_index - 1].attr("href")
-    location_page = Nokogiri::HTML(open(BASE_PATH + "/brk/"))
+  def self.gig_categories_for_location(location_index)
+    location_path = self.locations_html[location_index - 1].attr("href")
+    location_page = Nokogiri::HTML(open(BASE_PATH + location_path))
     self.gigs_results_html = location_page.css(".jobs div#ggg ul a")
     self.gigs_results_html.each_with_index { |gig_category, index| puts "#{index + 1}. #{gig_category.children.text}"}
   end
@@ -63,12 +63,12 @@ class Gigme::Scraper
     end
   end
 
-  def self.show_gig_details #(gig_index)
-    # gig_path = self.gig_html[gig_index - 1].children.css("a").attr("href")
-    # gig_details_page = Nokogiri::HTML(open(BASE_PATH + gig_path))
+  def self.show_gig_details(gig_index)
+    gig_path = self.gig_html[gig_index - 1].children.css("a").attr("href")
+    gig_details_page = Nokogiri::HTML(open(BASE_PATH + gig_path))
 
     # test code
-    gig_details_page = Nokogiri::HTML(open(BASE_PATH + "/brk/cpg/6214759555.html"))
+    # gig_details_page = Nokogiri::HTML(open(BASE_PATH + gig_path))
 
     # *********** gig title code ***********
 
@@ -87,12 +87,11 @@ class Gigme::Scraper
 
     compensation = gig_details_page.css(".attrgroup span").text
 
-    puts "compensation"
-
     puts gig_title
     puts
     puts final_gig_description
     puts
     puts compensation
+    puts
   end
 end

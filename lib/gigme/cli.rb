@@ -1,6 +1,7 @@
 class Gigme::CLI
+  attr_accessor :locations_input, :category_input, :locations
 
-  attr_accessor :locations_input, :category_input
+
 
   def call
     puts "Welcome to Gigme - New York!"
@@ -9,7 +10,7 @@ class Gigme::CLI
 
   def show_locations
     puts "Please choose from our list of locations:"
-    Gigme::Scraper.locations
+    self.locations = Gigme::Scraper.locations
     ask_for_location
   end
 
@@ -23,7 +24,7 @@ class Gigme::CLI
     if self.locations_input == 'exit'
       puts 'Goodbye!'
       exit
-    elsif self.locations_input.to_i > 0
+    elsif self.locations_input.to_i > 0 && self.locations_input.to_i <= self.locations.count
       show_gig_categories(self.locations_input.to_i)
     else
       puts "Not sure what you meant. Please choose a number associated with a location or 'exit' to quit the program."
@@ -72,8 +73,9 @@ class Gigme::CLI
   def show_gigs(input)
     puts
     puts "Here's the most recent gigs according to your preferences"
-    puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig categories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
-    Gigme::Scraper.gigs.each_with_index { |gig, index| puts "#{index + 1}. #{gig}" }
+    puts
+    puts "Select the gig's number to get more details.\nType 'categories' to choose from other gig categories,'locations' to select a new location, or type 'exit' to quit."
+    Gigme::Scraper.gigs_for_category(input)
     # puts(<<-DOC.sub(/\n$/, ''))
     #   1. gig
     #   2. gig
