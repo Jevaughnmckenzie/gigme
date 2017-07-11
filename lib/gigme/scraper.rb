@@ -62,4 +62,19 @@ class Gigme::Scraper
 
     end
   end
+
+  def self.show_gig_details #(gig_index)
+    # gig_path = self.gig_html[gig_index - 1].children.css("a").attr("href")
+    # gig_details_page = Nokogiri::HTML(open(BASE_PATH + gig_path))
+
+    # test code
+    gig_details_page = Nokogiri::HTML(open(BASE_PATH + "/brk/cpg/6214759555.html"))
+    binding.pry
+    gig_description = gig_details_page.css("#postingbody").text
+    # Remove any irrelavant text
+    gig_description_text_array = gig_description.split(/\n/)
+    end_of_irrelevant_text = gig_description_text_array.index("            QR Code Link to This Post")
+
+    relevant_gig_text = gig_description_text_array[(end_of_irrelevant_text + 1)..(gig_description_text_array.count-1)].join
+  end
 end
