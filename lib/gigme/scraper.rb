@@ -61,12 +61,11 @@ class Gigme::Scraper
       gig_text_end = gig_text_char_array.index("\n")
       relevant_gig_text = gig_text_char_array[0..gig_text_end].join
       date_posted = gig.children.css("time").attr("datetime").value
+      gig_path = self.gig_html[index].children.css("a").attr("href")
       # puts "#{index + 1}. #{relevant_gig_text} Posted:  #{gig.children.css("time").attr("datetime").value}"
-      create_gig(url:(BASE_PATH + gigs_path), title:relevant_gig_text, date_posted: date_posted)
+      create_gig(url:(BASE_PATH + gig_path), title:relevant_gig_text, date_posted: date_posted)
     end
   end
-
-
 
   def self.create_gig(gig_info)
     Gigme::Gig.new(gig_info)

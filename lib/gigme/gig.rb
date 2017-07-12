@@ -1,26 +1,31 @@
 class Gigme::Gig
 
-  attr_accessor :title, :description, :compensation, :date_posted, :url
+  attr_accessor :title, :description, :compensation, :date_posted, :url, :details_page
 
-  def initialize(title:,description:,compensation:,date_posted:, url:)
+  @@all = []
+
+  def initialize(title:,date_posted:, url:)
     @title = title
-    @description = description
-    @compensation = compensation
+    # @description = description
+    # @compensation = compensation
     @date_posted = date_posted
+    @url = url
     # @location = location
+    @@all << self
   end
 
-  def self.show_gig_details(gig_index)
-    gig_path = self.gig_html[gig_index - 1].children.css("a").attr("href")
-    gig_details_page = Nokogiri::HTML(open(BASE_PATH + gig_path))
+  def get_details
+    self.details_page ||= Nokogiri::HTML(open(self.url))
+  end
 
     # test code
     # gig_details_page = Nokogiri::HTML(open(BASE_PATH + gig_path))
 
     # *********** gig title code ***********
 
-    gig_title = gig_details_page.css(".postingtitletext #titletextonly").text
+    # gig_title = gig_details_page.css(".postingtitletext #titletextonly").text
 
+  def description
     # *********** gig description code ***********
     gig_description = gig_details_page.css("#postingbody").text
     # Remove any irrelavant text
@@ -28,15 +33,12 @@ class Gigme::Gig
     end_of_irrelevant_text = gig_description_text_array.index("            QR Code Link to This Post")
 
     relevant_gig_text = gig_description_text_array[(end_of_irrelevant_text + 1)..(gig_description_text_array.count-1)].join
-    final_gig_description = relevant_gig_text.strip
-
+    self.description ||= relevant_gig_text.strip
+  end
     # *********** gig compensation code ***********
-
-    compensation = gig_details_page.css(".attrgroup span").text
-
-    Gigme::Gig.new( title: gig_title,
-                    description: gig_description,
-                    compensation: compensation)
+  def compensation
+    self.compensation ||= gig_details_page.css(".attrgroup span").text
+  end
 
     # puts gig_title
     # puts
@@ -44,6 +46,5 @@ class Gigme::Gig
     # puts
     # puts compensation
     # puts
-  end
 
 end
