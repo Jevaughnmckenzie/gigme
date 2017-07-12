@@ -38,16 +38,7 @@ class Gigme::CLI
     puts "Here's list of gig categories:"
     Gigme::Scraper.gig_categories_for_location(input)
     # categories.each_with_index { |category, index| puts "#{index + 1}. #{category}" }
-    # puts(<<-DOC.sub(/\n$/, ''))
-    #   1. Computer
-    #   2. Creative
-    #   3. Crew
-    #   4. Domestic
-    #   5. Event
-    #   6. Labor
-    #   7. Talent
-    #   8. Writing
-    # DOC
+  
     ask_for_gig_category
   end
 
@@ -75,18 +66,12 @@ class Gigme::CLI
     puts "Here's the most recent gigs according to your preferences"
     puts
     puts "Select the gig's number to get more details.\nType 'categories' to choose from other gig categories,'locations' to select a new location, or type 'exit' to quit."
-    Gigme::Scraper.gigs_for_category(input)
-    # puts(<<-DOC.sub(/\n$/, ''))
-    #   1. gig
-    #   2. gig
-    #   3. gig
-    #   4. gig
-    #   5. gig
-    #   6. gig
-    #   7. gig
-    #   8. gig
-    # DOC
+    # Gigme::Scraper.gigs_for_category(input)
+    Gigme::Gig.all.each_with_index { |gig, index| puts "#{index + 1}. #{gig.title}" }
+    take_gigs_results_input
+  end
 
+  def take_gigs_results_input
     gig_input = gets.strip.downcase
 
     if gig_input == 'categories'
@@ -105,11 +90,18 @@ class Gigme::CLI
   end
 
   def show_detail(gig_result_index)
-    Gigme::Scraper.show_gig_details(gig_result_index)
-    # puts "..........."
-    # puts "gig details"
-    # puts "..........."
     puts
+    Gigme::Gig.all[gig_result_index - 1].title
+    puts
+    Gigme::Gig.all[gig_result_index - 1].description
+    puts
+    Gigme::Gig.all[gig_result_index - 1].compensation
+    puts
+
+    take_gig_details_input
+  end
+
+  def take_gig_details_input
     puts "What would you like to do next?"
     puts(<<-DOC.sub(/\n$/, ''))
       1. Back to results

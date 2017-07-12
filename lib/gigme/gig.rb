@@ -14,6 +14,10 @@ class Gigme::Gig
     @@all << self
   end
 
+  def self.all
+    @@all
+  end
+
   def get_details
     self.details_page ||= Nokogiri::HTML(open(self.url))
   end
