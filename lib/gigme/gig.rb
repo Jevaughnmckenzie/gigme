@@ -12,15 +12,15 @@ class Gigme::Gig
     @url = url
     # @location = location
     @@all << self
+
+    self.details_page ||= Nokogiri::HTML(open(self.url))
   end
 
   def self.all
     @@all
   end
 
-  def get_details
-    self.details_page ||= Nokogiri::HTML(open(self.url))
-  end
+
 
     # test code
     # gig_details_page = Nokogiri::HTML(open(BASE_PATH + gig_path))
@@ -31,7 +31,7 @@ class Gigme::Gig
 
   def description
     # *********** gig description code ***********
-    gig_description = gig_details_page.css("#postingbody").text
+    gig_description = self.details_page.css("#postingbody").text
     # Remove any irrelavant text
     gig_description_text_array = gig_description.split(/\n/)
     end_of_irrelevant_text = gig_description_text_array.index("            QR Code Link to This Post")
@@ -41,7 +41,7 @@ class Gigme::Gig
   end
     # *********** gig compensation code ***********
   def compensation
-    self.compensation ||= gig_details_page.css(".attrgroup span").text
+    self.compensation ||= self.details_page.css(".attrgroup span").text
   end
 
     # puts gig_title

@@ -38,7 +38,7 @@ class Gigme::CLI
     puts "Here's list of gig categories:"
     Gigme::Scraper.gig_categories_for_location(input)
     # categories.each_with_index { |category, index| puts "#{index + 1}. #{category}" }
-  
+
     ask_for_gig_category
   end
 
@@ -66,7 +66,7 @@ class Gigme::CLI
     puts "Here's the most recent gigs according to your preferences"
     puts
     puts "Select the gig's number to get more details.\nType 'categories' to choose from other gig categories,'locations' to select a new location, or type 'exit' to quit."
-    # Gigme::Scraper.gigs_for_category(input)
+    Gigme::Scraper.gigs_for_category(input)
     Gigme::Gig.all.each_with_index { |gig, index| puts "#{index + 1}. #{gig.title}" }
     take_gigs_results_input
   end

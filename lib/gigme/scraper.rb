@@ -48,7 +48,7 @@ class Gigme::Scraper
     gigs_path = self.gigs_results_html[category_index - 1].attr("href")
 
 
-    # gigs_page = Nokogiri::HTML(open(BASE_PATH + gigs_path))
+    gigs_page = Nokogiri::HTML(open(BASE_PATH + gigs_path))
     # binding.pry
     self.gig_html = gigs_page.css(".rows p.result-info")
 
