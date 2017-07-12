@@ -46,7 +46,9 @@ class Gigme::Scraper
 
   def self.gigs_for_category(category_index)
     gigs_path = self.gigs_results_html[category_index - 1].attr("href")
-    gigs_page = Nokogiri::HTML(open(BASE_PATH + gigs_path))
+
+
+    # gigs_page = Nokogiri::HTML(open(BASE_PATH + gigs_path))
     # binding.pry
     self.gig_html = gigs_page.css(".rows p.result-info")
 
@@ -58,40 +60,16 @@ class Gigme::Scraper
       gig_text_char_array = gig_text.split(//)
       gig_text_end = gig_text_char_array.index("\n")
       relevant_gig_text = gig_text_char_array[0..gig_text_end].join
-      puts "#{index + 1}. #{relevant_gig_text} - Posted:  #{gig.children.css("time").attr("datetime").value}"
-
+      date_posted = gig.children.css("time").attr("datetime").value
+      # puts "#{index + 1}. #{relevant_gig_text} Posted:  #{gig.children.css("time").attr("datetime").value}"
+      create_gig(url:(BASE_PATH + gigs_path), title:relevant_gig_text, date_posted: date_posted)
     end
   end
 
-  def self.show_gig_details(gig_index)
-    gig_path = self.gig_html[gig_index - 1].children.css("a").attr("href")
-    gig_details_page = Nokogiri::HTML(open(BASE_PATH + gig_path))
 
-    # test code
-    # gig_details_page = Nokogiri::HTML(open(BASE_PATH + gig_path))
 
-    # *********** gig title code ***********
-
-    gig_title = gig_details_page.css(".postingtitletext #titletextonly").text
-
-    # *********** gig description code ***********
-    gig_description = gig_details_page.css("#postingbody").text
-    # Remove any irrelavant text
-    gig_description_text_array = gig_description.split(/\n/)
-    end_of_irrelevant_text = gig_description_text_array.index("            QR Code Link to This Post")
-
-    relevant_gig_text = gig_description_text_array[(end_of_irrelevant_text + 1)..(gig_description_text_array.count-1)].join
-    final_gig_description = relevant_gig_text.strip
-
-    # *********** gig compensation code ***********
-
-    compensation = gig_details_page.css(".attrgroup span").text
-
-    puts gig_title
-    puts
-    puts final_gig_description
-    puts
-    puts compensation
-    puts
+  def self.create_gig(gig_info)
+    Gigme::Gig.new(gig_info)
   end
+
 end
