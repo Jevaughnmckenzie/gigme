@@ -17,7 +17,6 @@ class GigLoader < Loader
     gig
   end
 
-  def extract_
 
   def extract_dsecription(html)
     gig_description = html.css("#postingbody").text
