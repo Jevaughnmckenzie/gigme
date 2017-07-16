@@ -2,22 +2,23 @@ class Gigme::CLI
 
   attr_accessor :locations_input, :category_input
 
+  def pretty_print(array)
+    array.each_with_index do |cell, i|
+      puts "#{i+1}. #{cell[:name]}"
+    end
+  end
+
   def call
     puts "Welcome to Gigme - New York!"
     show_locations
   end
 
   def show_locations
-    puts "Please choose from our list of locations:"
-    puts(<<-DOC.sub(/\n$/, ''))
-      1. Mahattan
-      2. Brooklyn
-      3. Queens
-      4. The Bronx
-      5. Staten Island
-      6. Long Island
-      7. Westchester
-    DOC
+    puts "Loading boroughs"
+
+    locations = LocationLoader.new.load
+
+    pretty_print(locations)
     ask_for_location
   end
 
