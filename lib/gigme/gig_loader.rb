@@ -9,8 +9,15 @@ class GigLoader < Loader
   def load
     gig_details_page = super(self.gig_info)
 
+    gig = Gig.new
+    gig.title = gig_title = gig_details_page.css(".postingtitletext #titletextonly").text
+    gig.description = extract_dsecription(gig_details_page)
+    gig.compensation = compensation = gig_details_page.css(".attrgroup span").text
 
+    gig
   end
+
+  def extract_
 
   def extract_dsecription(html)
     gig_description = html.css("#postingbody").text
@@ -21,5 +28,6 @@ class GigLoader < Loader
     relevant_gig_text = gig_description_text_array[(end_of_irrelevant_text + 1)..(gig_description_text_array.count-1)].join
     relevant_gig_text.strip
   end
+
 
 end
