@@ -1,11 +1,17 @@
 class Gigme::CLI
 
-  attr_accessor :locations_input, :category_input
+  attr_accessor :location, :category
 
   def pretty_print(array)
     array.each_with_index do |cell, i|
       puts "#{i+1}. #{cell[:name]}"
     end
+  end
+
+  def selection_response(array)
+    input = gets.chomp
+    index = input.to_i - 1
+    array[index]
   end
 
   def call
@@ -19,25 +25,21 @@ class Gigme::CLI
     locations = LocationLoader.new.load
 
     pretty_print(locations)
-    ask_for_location
+    ask_for_location(locations)
   end
 
-  def ask_for_location
+  def ask_for_location(locations)
     puts
     puts "Where would you like to search for gigs?"
     puts "Type 'exit' to exit the program"
     puts
-    self.locations_input = gets.strip.downcase
 
-    if self.locations_input == 'exit'
-      puts 'Goodbye!'
-      exit
-    elsif self.locations_input.to_i > 0
-      show_gig_categories(self.locations_input.to_i)
+    if selection_response(locations)
+      self.location = selection_response(locations)
+      show_gig_categories(self.location)
     else
       puts "Not sure what you meant. Please choose a number associated with a location or 'exit' to quit the program."
       show_locations
-      ask_for_location
     end
 
   end
@@ -45,35 +47,33 @@ class Gigme::CLI
   def show_gig_categories(input)
     puts
     puts "Here's list of gig categories:"
-    puts(<<-DOC.sub(/\n$/, ''))
-      1. Computer
-      2. Creative
-      3. Crew
-      4. Domestic
-      5. Event
-      6. Labor
-      7. Talent
-      8. Writing
-    DOC
-    ask_for_gig_category
+    # puts(<<-DOC.sub(/\n$/, ''))
+    #   1. Computer
+    #   2. Creative
+    #   3. Crew
+    #   4. Domestic
+    #   5. Event
+    #   6. Labor
+    #   7. Talent
+    #   8. Writing
+    # DOC
+    categories = CategoryLoader.new(location).load
+
+    pretty_print(categories)
+
+    ask_for_gig_category(categories)
   end
 
-  def ask_for_gig_category
+  def ask_for_gig_category(categories)
     puts
     puts "What kind of gig are you looking for?"
-    self.category_input = gets.strip.downcase
 
-    if self.category_input == 'exit'
-      puts 'Goodbye!'
-      exit
-    elsif self.category_input == 'locations'
-      show_locations
-    elsif self.category_input.to_i > 0
-      show_gigs(self.category_input.to_i)
+    if selection_response(categories)
+      self.category = selection_response(categories)
+      show_gigs(self.category)
     else
       puts "Not sure what you meant. Please choose a number associated with a gig, 'locations' to change location, or 'exit' to quit the program."
-      show_gig_categories(self.category_input)
-      ask_for_gig_category
+      show_gig_categories(self.location)
     end
   end
 
