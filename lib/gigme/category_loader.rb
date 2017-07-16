@@ -14,7 +14,7 @@ class CategoryLoader < Loader
     gigs_results_html.map do |gig_category|
       {
         name: gig_category.children.text,
-        # href:
+        href: gig_category.attr("href")
       }
 
     end
