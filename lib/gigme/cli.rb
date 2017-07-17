@@ -13,12 +13,12 @@ class Gigme::CLI
     input = gets.chomp.downcase
     index = input.to_i - 1
 
-    if index == 'exit'
+    if input == 'exit'
       puts 'Goodbye!'
       exit
-    elsif index == 'locations'
+    elsif input == 'locations'
       show_locations
-    elsif index == 'categories'
+    elsif input == 'categories'
       show_gig_categories(self.location)
     elsif index.to_i >= 0
       array[index]
