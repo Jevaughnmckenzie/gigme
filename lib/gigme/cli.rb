@@ -132,10 +132,14 @@ class Gigme::CLI
     end
   end
 
-  def show_detail
-    puts "..........."
-    puts "gig details"
-    puts "..........."
+  def show_detail(gig)
+    gig_details = GigLoader.new(gig).load
+
+    puts gig_details.title
+    puts
+    puts gig_details.description
+    puts
+    puts gig_details.compensation
     puts
     puts "What would you like to do next?"
     puts(<<-DOC.sub(/\n$/, ''))
