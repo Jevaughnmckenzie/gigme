@@ -1,6 +1,6 @@
 class Gigme::CLI
 
-  attr_accessor :location, :category
+  attr_accessor :location, :category, :gig
 
   def pretty_print(array)
     array.each_with_index do |cell, i|
@@ -53,7 +53,7 @@ class Gigme::CLI
 
   end
 
-  def show_gig_categories(input)
+  def show_gig_categories(location)
     puts
     puts "Here's list of gig categories:"
     # puts(<<-DOC.sub(/\n$/, ''))
@@ -66,6 +66,8 @@ class Gigme::CLI
     #   7. Talent
     #   8. Writing
     # DOC
+
+
     categories = CategoryLoader.new(location).load
 
     pretty_print(categories)
@@ -86,32 +88,44 @@ class Gigme::CLI
     end
   end
 
-  def show_gigs(input)
+  def show_gigs(category)
     puts
     puts "Here's the most recent gigs according to your preferences"
     puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig categories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
-    puts(<<-DOC.sub(/\n$/, ''))
-      1. gig
-      2. gig
-      3. gig
-      4. gig
-      5. gig
-      6. gig
-      7. gig
-      8. gig
-    DOC
+    # puts(<<-DOC.sub(/\n$/, ''))
+    #   1. gig
+    #   2. gig
+    #   3. gig
+    #   4. gig
+    #   5. gig
+    #   6. gig
+    #   7. gig
+    #   8. gig
+    # DOC
 
-    gig_input = gets.strip.downcase
+    gigs = GigsLoader.new(category).load
+
+    pretty_print(gigs)
+
+    ask_for_gig_selection(gigs)
+
+  end
+
+  def ask_for_gig_selection(gigs)
+    # gig_input = gets.strip.downcase
 
     if gig_input == 'categories'
-      show_gig_categories(self.category_input)
-    elsif gig_input == 'locations'
-      show_locations
-    elsif gig_input == 'exit'
-      puts "Goodbye!"
-      exit
-    elsif gig_input.to_i > 0
-      show_detail
+      show_gig_categories(self.location)
+    # elsif gig_input == 'locations'
+    #   show_locations
+    # elsif gig_input == 'exit'
+    #   puts "Goodbye!"
+    #   exit
+    # elsif gig_input.to_i > 0
+    #   show_detail
+  elsif selection_response(gigs)
+    self.gig = selection_response(gigs)
+    show_detail(gig)
     else
       puts "Not sure what you meant. Please choose from our list of gigs or enter 'locations', 'categories', or 'exit'."
       show_gigs(input)
