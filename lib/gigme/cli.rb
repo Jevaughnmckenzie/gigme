@@ -151,9 +151,9 @@ class Gigme::CLI
     input = gets.strip
 
     if input.to_i == 1
-      show_gigs(self.category_input.to_i)
+      show_gigs(self.category)
     elsif input.to_i == 2
-      show_gig_categories(self.locations_input.to_i)
+      show_gig_categories(self.location)
     elsif input.to_i == 3
       show_locations
     else
