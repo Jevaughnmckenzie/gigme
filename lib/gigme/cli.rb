@@ -17,7 +17,7 @@ class Gigme::CLI
       exit
     elsif index == 'locations'
       show_locations
-    elsif index.to_i > 0
+    elsif index.to_i >= 0
       array[index]
     else
       false
@@ -47,7 +47,7 @@ class Gigme::CLI
 
     self.location = selection_response(locations)
 
-    if self.locations
+    if self.location
       # binding.pry
       show_gig_categories(self.location)
     else
@@ -97,7 +97,7 @@ class Gigme::CLI
     puts "Here's the most recent gigs according to your preferences"
     puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig categories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
 
-    gigs = GigsLoader.new(category).load
+    gigs = GigsResultsLoader.new(category).load
 
     pretty_print(gigs)
 
@@ -109,7 +109,7 @@ class Gigme::CLI
     gig_input = gets.strip.downcase
 
     self.gig = selection_response(gigs)
-    
+
     if gig_input == 'categories'
       show_gig_categories(self.location)
     elsif self.gig
