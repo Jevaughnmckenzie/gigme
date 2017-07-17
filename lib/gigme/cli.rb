@@ -1,7 +1,28 @@
 class Gigme::CLI
-  attr_accessor :locations_input, :category_input, :locations
 
+  attr_accessor :location, :category, :gig
 
+  def pretty_print(array)
+    array.each_with_index do |cell, i|
+      puts "#{i+1}. #{cell[:name]}"
+    end
+  end
+
+  def selection_response(array)
+    input = gets.chomp.downcase
+    index = input.to_i - 1
+
+    if index == 'exit'
+      puts 'Goodbye!'
+      exit
+    elsif index == 'locations'
+      show_locations
+    elsif index.to_i > 0
+      array[index]
+    else
+      false
+  end
+>>>>>>> cli
 
   def call
     puts "Welcome to Gigme - New York!"
@@ -9,23 +30,29 @@ class Gigme::CLI
   end
 
   def show_locations
+<<<<<<< HEAD
     puts "Please choose from our list of locations:"
     self.locations = Gigme::Scraper.locations
     ask_for_location
+=======
+    puts "Loading boroughs"
+
+    locations = LocationLoader.new.load
+
+    pretty_print(locations)
+    ask_for_location(locations)
+>>>>>>> cli
   end
 
-  def ask_for_location
+  def ask_for_location(locations)
     puts
     puts "Where would you like to search for gigs?"
     puts "Type 'exit' to exit the program"
     puts
-    self.locations_input = gets.strip.downcase
 
-    if self.locations_input == 'exit'
-      puts 'Goodbye!'
-      exit
-    elsif self.locations_input.to_i > 0 && self.locations_input.to_i <= self.locations.count
-      show_gig_categories(self.locations_input.to_i)
+    if selection_response(locations)
+      self.location = selection_response(locations)
+      show_gig_categories(self.location)
     else
       puts "Not sure what you meant. Please choose a number associated with a location or 'exit' to quit the program."
       show_locations
@@ -33,7 +60,7 @@ class Gigme::CLI
 
   end
 
-  def show_gig_categories(input)
+  def show_gig_categories(location)
     puts
     puts "Here's list of gig categories:"
     Gigme::Scraper.gig_categories_for_location(input)
@@ -48,67 +75,64 @@ class Gigme::CLI
     #   7. Talent
     #   8. Writing
     # DOC
-    ask_for_gig_category
+
+
+    categories = CategoryLoader.new(location).load
+
+    pretty_print(categories)
+
+    ask_for_gig_category(categories)
   end
 
-  def ask_for_gig_category
+  def ask_for_gig_category(categories)
     puts
     puts "What kind of gig are you looking for?"
-    self.category_input = gets.strip.downcase
 
-    if self.category_input == 'exit'
-      puts 'Goodbye!'
-      exit
-    elsif self.category_input == 'locations'
-      show_locations
-    elsif self.category_input.to_i > 0
-      show_gigs(self.category_input.to_i)
+    if selection_response(categories)
+      self.category = selection_response(categories)
+      show_gigs(self.category)
     else
       puts "Not sure what you meant. Please choose a number associated with a gig, 'locations' to change location, or 'exit' to quit the program."
-      show_gig_categories(self.category_input)
-      ask_for_gig_category
+      show_gig_categories(self.location)
     end
   end
 
-  def show_gigs(input)
+  def show_gigs(category)
     puts
     puts "Here's the most recent gigs according to your preferences"
-    puts
-    puts "Select the gig's number to get more details.\nType 'categories' to choose from other gig categories,'locations' to select a new location, or type 'exit' to quit."
-    Gigme::Scraper.gigs_for_category(input)
-    # puts(<<-DOC.sub(/\n$/, ''))
-    #   1. gig
-    #   2. gig
-    #   3. gig
-    #   4. gig
-    #   5. gig
-    #   6. gig
-    #   7. gig
-    #   8. gig
-    # DOC
+    puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig categories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
 
-    gig_input = gets.strip.downcase
+    gigs = GigsLoader.new(category).load
+
+    pretty_print(gigs)
+
+    ask_for_gig_selection(gigs)
+
+  end
+
+  def ask_for_gig_selection(gigs)
+    # gig_input = gets.strip.downcase
 
     if gig_input == 'categories'
-      show_gig_categories(self.category_input)
-    elsif gig_input == 'locations'
-      show_locations
-    elsif gig_input == 'exit'
-      puts "Goodbye!"
-      exit
-    elsif gig_input.to_i > 0
-      show_detail(gig_input.to_i)
+      show_gig_categories(self.location)
+    elsif selection_response(gigs)
+      self.gig = selection_response(gigs)
+      show_detail(self.gig)
     else
       puts "Not sure what you meant. Please choose from our list of gigs or enter 'locations', 'categories', or 'exit'."
-      show_gigs(input)
+      show_gigs(self.category)
     end
   end
 
-  def show_detail(gig_result_index)
-    Gigme::Scraper.show_gig_details(gig_result_index)
-    # puts "..........."
-    # puts "gig details"
-    # puts "..........."
+  def show_detail(gig)
+    gig_details = GigLoader.new(gig).load
+
+    puts gig_details.title
+    puts
+    puts gig_details.description
+    puts
+    puts gig_details.compensation
+# >>>>>>> cli
     puts
     puts "What would you like to do next?"
     puts(<<-DOC.sub(/\n$/, ''))
@@ -120,9 +144,9 @@ class Gigme::CLI
     input = gets.strip
 
     if input.to_i == 1
-      show_gigs(self.category_input.to_i)
+      show_gigs(self.category)
     elsif input.to_i == 2
-      show_gig_categories(self.locations_input.to_i)
+      show_gig_categories(self.location)
     elsif input.to_i == 3
       show_locations
     else
