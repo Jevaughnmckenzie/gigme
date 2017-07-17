@@ -45,8 +45,10 @@ class Gigme::CLI
     puts "Type 'exit' to exit the program"
     puts
 
-    if selection_response(locations)
-      self.location = selection_response(locations)
+    self.location = selection_response(locations)
+
+    if self.locations
+      # binding.pry
       show_gig_categories(self.location)
     else
       puts "Not sure what you meant. Please choose a number associated with a location or 'exit' to quit the program."
@@ -81,8 +83,8 @@ class Gigme::CLI
     puts
     puts "What kind of gig are you looking for?"
 
-    if selection_response(categories)
-      self.category = selection_response(categories)
+    self.category = selection_response(categories)
+    if self.category
       show_gigs(self.category)
     else
       puts "Not sure what you meant. Please choose a number associated with a gig, 'locations' to change location, or 'exit' to quit the program."
@@ -106,10 +108,11 @@ class Gigme::CLI
   def ask_for_gig_selection(gigs)
     gig_input = gets.strip.downcase
 
+    self.gig = selection_response(gigs)
+    
     if gig_input == 'categories'
       show_gig_categories(self.location)
-    elsif selection_response(gigs)
-      self.gig = selection_response(gigs)
+    elsif self.gig
       show_detail(self.gig)
     else
       puts "Not sure what you meant. Please choose from our list of gigs or enter 'locations', 'categories', or 'exit'."
