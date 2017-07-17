@@ -8,7 +8,7 @@ require_relative "gigme/scraper"
 require_relative "gigme/category_loader"
 require_relative "gigme/gig_loader"
 require_relative "gigme/gig"
-require_relative "gigme/gig_results_loader"
+require_relative "gigme/gigs_results_loader"
 require_relative "gigme/cli"
 require_relative "gigme/location_loader"
 

@@ -21,6 +21,7 @@ class Gigme::CLI
       array[index]
     else
       false
+    end
   end
 
   def call
@@ -51,7 +52,6 @@ class Gigme::CLI
       puts "Not sure what you meant. Please choose a number associated with a location or 'exit' to quit the program."
       show_locations
     end
-
   end
 
   def show_gig_categories(location)
