@@ -98,7 +98,7 @@ class Gigme::CLI
     puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig categories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
 
     gigs = GigsResultsLoader.new(category).load
-
+    binding.pry
     pretty_print(gigs)
 
     ask_for_gig_selection(gigs)
