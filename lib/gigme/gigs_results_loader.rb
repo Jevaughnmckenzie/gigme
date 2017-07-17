@@ -19,7 +19,7 @@ class GigsResultsLoader < Loader
       gig_text_char_array = gig_text.split(//)
       gig_text_end = gig_text_char_array.index("\n")
       relevant_gig_text = gig_text_char_array[0...gig_text_end].join
-      # binding.pry
+  
       {
         name: relevant_gig_text,
         href: gig.children.css("a").attr("href").value

@@ -10,9 +10,9 @@ class GigLoader < Loader
     gig_details_page = super(self.gig_info[:href])
 
     gig = Gig.new
-    gig.title = gig_title = gig_details_page.css(".postingtitletext #titletextonly").text
+    gig.title = gig_details_page.css(".postingtitletext #titletextonly").text
     gig.description = extract_dsecription(gig_details_page)
-    gig.compensation = compensation = gig_details_page.css(".attrgroup span").text
+    gig.compensation = gig_details_page.css(".attrgroup span").text
 
     gig
   end

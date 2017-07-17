@@ -7,7 +7,7 @@ class CategoryLoader < Loader
   end
 
   def load
-    # ["computer", "labor", "creative", "events"]
+
     location_page = super(location[:href])
     gigs_results_html = location_page.css(".jobs div#ggg ul a")
 

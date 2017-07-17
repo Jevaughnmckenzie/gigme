@@ -62,18 +62,6 @@ class Gigme::CLI
   def show_gig_categories(location)
     puts
     puts "Here's list of gig categories:"
-    # categories.each_with_index { |category, index| puts "#{index + 1}. #{category}" }
-    # puts(<<-DOC.sub(/\n$/, ''))
-    #   1. Computer
-    #   2. Creative
-    #   3. Crew
-    #   4. Domestic
-    #   5. Event
-    #   6. Labor
-    #   7. Talent
-    #   8. Writing
-    # DOC
-
 
     categories = CategoryLoader.new(location).load
 
