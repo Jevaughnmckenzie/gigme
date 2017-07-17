@@ -22,7 +22,6 @@ class Gigme::CLI
     else
       false
   end
->>>>>>> cli
 
   def call
     puts "Welcome to Gigme - New York!"
@@ -30,18 +29,13 @@ class Gigme::CLI
   end
 
   def show_locations
-<<<<<<< HEAD
-    puts "Please choose from our list of locations:"
-    self.locations = Gigme::Scraper.locations
-    ask_for_location
-=======
     puts "Loading boroughs"
-
+    puts
+    puts "Please choose from our list of locations:"
     locations = LocationLoader.new.load
 
     pretty_print(locations)
     ask_for_location(locations)
->>>>>>> cli
   end
 
   def ask_for_location(locations)
@@ -63,7 +57,6 @@ class Gigme::CLI
   def show_gig_categories(location)
     puts
     puts "Here's list of gig categories:"
-    Gigme::Scraper.gig_categories_for_location(input)
     # categories.each_with_index { |category, index| puts "#{index + 1}. #{category}" }
     # puts(<<-DOC.sub(/\n$/, ''))
     #   1. Computer
@@ -111,7 +104,7 @@ class Gigme::CLI
   end
 
   def ask_for_gig_selection(gigs)
-    # gig_input = gets.strip.downcase
+    gig_input = gets.strip.downcase
 
     if gig_input == 'categories'
       show_gig_categories(self.location)
@@ -132,7 +125,7 @@ class Gigme::CLI
     puts gig_details.description
     puts
     puts gig_details.compensation
-# >>>>>>> cli
+
     puts
     puts "What would you like to do next?"
     puts(<<-DOC.sub(/\n$/, ''))
