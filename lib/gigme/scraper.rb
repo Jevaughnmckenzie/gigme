@@ -87,6 +87,9 @@ class Gigme::Scraper
 
     compensation = gig_details_page.css(".attrgroup span").text
 
+    puts
+    puts
+    puts "----------------------------"
     puts gig_title
     puts
     puts final_gig_description
