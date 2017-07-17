@@ -6,6 +6,7 @@ class Gigme::CLI
     array.each_with_index do |cell, i|
       puts "#{i+1}. #{cell[:name]}"
     end
+    puts
   end
 
   def selection_response(array)
@@ -17,6 +18,8 @@ class Gigme::CLI
       exit
     elsif index == 'locations'
       show_locations
+    elsif index == 'categories'
+      show_gig_categories(self.location)
     elsif index.to_i >= 0
       array[index]
     else
@@ -98,7 +101,7 @@ class Gigme::CLI
     puts "Select the gig's number to get more details, \ntype 'categories' to choose from other gig categories,\ntype 'locations' to select a new location,\nor type 'exit' to quit."
 
     gigs = GigsResultsLoader.new(category).load
-    binding.pry
+    # binding.pry
     pretty_print(gigs)
 
     ask_for_gig_selection(gigs)
@@ -106,13 +109,12 @@ class Gigme::CLI
   end
 
   def ask_for_gig_selection(gigs)
-    gig_input = gets.strip.downcase
+    # gig_input = gets.strip.downcase
 
     self.gig = selection_response(gigs)
 
-    if gig_input == 'categories'
-      show_gig_categories(self.location)
-    elsif self.gig
+    
+    if self.gig
       show_detail(self.gig)
     else
       puts "Not sure what you meant. Please choose from our list of gigs or enter 'locations', 'categories', or 'exit'."

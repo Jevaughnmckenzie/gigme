@@ -7,7 +7,7 @@ class GigLoader < Loader
   end
 
   def load
-    gig_details_page = super(self.gig_info)
+    gig_details_page = super(self.gig_info[:href])
 
     gig = Gig.new
     gig.title = gig_title = gig_details_page.css(".postingtitletext #titletextonly").text
