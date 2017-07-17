@@ -9,9 +9,18 @@ class Gigme::CLI
   end
 
   def selection_response(array)
-    input = gets.chomp
+    input = gets.chomp.downcase
     index = input.to_i - 1
-    array[index]
+
+    if index == 'exit'
+      puts 'Goodbye!'
+      exit
+    elsif index == 'locations'
+      show_locations
+    elsif index.to_i > 0
+      array[index]
+    else
+      false
   end
 
   def call
